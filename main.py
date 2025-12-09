@@ -65,7 +65,7 @@ def save_metadata(m):
 def refresh_challenge_db_task():
     jwt_token = make_jwt()
     token = get_installation_token(jwt_token)
-    repos = list_orgs_repos(token)
+    repos = list_org_repos(token)
     meta = ensure_metadata()
     for r in repos:
         owner, name, branch = r['owner']['login'], r['name'], r['default_branch']
@@ -81,7 +81,7 @@ def refresh_challenge_db_task():
                 meta[name] = {'sha': sha, 'downloaded_at': int(time.time()), 'path': filename}
     save_metadata(meta)
 
-@app.post("/refresh_challenge_db"):
+@app.post("/refresh_challenge_db")
 async def refresh_challenge_db(background_tasks: BackgroundTasks):
-    backgrond_tasks.add_task(refresh_challenge_db_task)
+    background_tasks.add_task(refresh_challenge_db_task)
     return {"status": "refresh challenge db started"}
