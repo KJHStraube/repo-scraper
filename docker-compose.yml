@@ -4,10 +4,15 @@ services:
     env_file: .env
     ports:
       - "8080:8080"
+    secrets:
+      - github_pat
     volumes:
       - repos_data:/data/repos
-      - ./secrets/readmefetcher.private-key.pem:/run/secrets/readmefetcher.private-key.pem:ro
     restart: unless-stopped
+
+secrets:
+  github_pat:
+    file: ./secrets/github.pat
 
 volumes:
   repos_data:
